@@ -1,0 +1,49 @@
+﻿using AplicationCore.Sevices.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AplicationCore.Entities
+{
+    public class RecordFilter : BaseEntity
+    {
+        public int RecordFilterId { get; set; }
+        public int Rooms { get; set; }
+        public int ParkingSpaces { get; set; }
+        public decimal SalePriceMin { get; set; }
+        public decimal SalePriceMax { get; set; }
+        public string State { get; set; }
+        public string City { get; set; }
+        public string Uf { get; set; }
+        public string Neighborhood { get; set; }
+
+        public Person Person { get; set; }
+
+        public void AddRecordFilter(RecordFilterDto recordFilterDto)
+        {
+            if (recordFilterDto != null)
+            {
+                this.Rooms = recordFilterDto.Rooms;
+                this.ParkingSpaces = recordFilterDto.ParkingSpaces;
+                this.SalePriceMin = recordFilterDto.SalePriceMin;
+                this.SalePriceMax = recordFilterDto.SalePriceMax;
+                this.State = recordFilterDto.State;
+                this.City = recordFilterDto.City;
+                this.Uf = recordFilterDto.Uf;
+                this.Neighborhood = recordFilterDto.Neighborhood;
+                this.RecordDate = DateTime.Now;
+                this.Person = recordFilterDto.Person;
+                this.Active = true;
+            }
+        }
+
+        public void AddRecordFilter(RecordFilterDto recordFilter, int recordFilterId)
+        {
+            if (recordFilter != null)
+            {
+                this.RecordFilterId = recordFilterId;
+                AddRecordFilter(recordFilter);
+            }
+        }
+    }
+}
