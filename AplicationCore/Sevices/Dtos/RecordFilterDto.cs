@@ -18,6 +18,6 @@ namespace AplicationCore.Sevices.Dtos
         public string City { get; set; }
         public string Uf { get; set; }
         public string Neighborhood { get; set; }        
-        public Person Person { get; set; }
+        public int PersonId { get; set; }
     }
 }
