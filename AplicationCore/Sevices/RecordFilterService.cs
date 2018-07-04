@@ -1,6 +1,7 @@
 ﻿using AplicationCore.Entities;
 using AplicationCore.Interfaces;
 using AplicationCore.Sevices.Dtos;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -35,8 +36,10 @@ namespace AplicationCore.Sevices
 
         public async Task<RecordFilter> AddRecordFilter(RecordFilterDto recordFilterDto)
         {
-            this._recordFilter = new RecordFilter();
-            this._recordFilter.AddRecordFilter(recordFilterDto);
+            this._recordFilter = JsonConvert.DeserializeObject<RecordFilter>(JsonConvert.SerializeObject(recordFilterDto));
+
+
+            //this._recordFilter.AddRecordFilter(recordFilterDto);
 
             this._recordFilter = await _recordFilterAsyncRepository.AddAsync(this._recordFilter);
 

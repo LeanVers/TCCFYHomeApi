@@ -16,11 +16,14 @@ namespace AplicationCore.Entities
         public string City { get; set; }
         public string Uf { get; set; }
         public string Neighborhood { get; set; }
+        public int PersonId { get; set; }
 
-        public Person Person { get; set; }
+        //public Person Person { get; set; }
 
         public void AddRecordFilter(RecordFilterDto recordFilterDto)
         {
+
+
             if (recordFilterDto != null)
             {
                 this.Rooms = recordFilterDto.Rooms;
@@ -31,8 +34,8 @@ namespace AplicationCore.Entities
                 this.City = recordFilterDto.City;
                 this.Uf = recordFilterDto.Uf;
                 this.Neighborhood = recordFilterDto.Neighborhood;
+                this.PersonId = recordFilterDto.PersonId;
                 this.RecordDate = DateTime.Now;
-                this.Person = recordFilterDto.Person;
                 this.Active = true;
             }
         }
