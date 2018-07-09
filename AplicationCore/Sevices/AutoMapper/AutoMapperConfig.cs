@@ -1,9 +1,6 @@
 ﻿using AplicationCore.Entities;
 using AplicationCore.Sevices.Dtos;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AplicationCore.Sevices.AutoMapper
 {
@@ -18,6 +15,7 @@ namespace AplicationCore.Sevices.AutoMapper
                 cfg.CreateMap<RecordFilter, RecordFilterDto>().ReverseMap();
                 cfg.CreateMap<TypeResidencialProperty, TypeResidencialPropertyDto>().ReverseMap();
                 cfg.CreateMap<ResidencialProperty, ResidencialPropertyDto>().ReverseMap();
+                cfg.CreateMap<Favorite, FavoriteDto>().ReverseMap();
             });
         }
     }

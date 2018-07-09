@@ -46,6 +46,7 @@ namespace FYHome
             services.AddScoped<ITypeResidencialPropertyService, TypeResidencialPropertyService>();
             services.AddScoped<IRecordFilterService, RecordFilterService>();
             services.AddScoped<IResidencialPropertyService, ResidencialPropertyService>();
+            services.AddScoped<IFavoriteService, FavoriteService>();
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 

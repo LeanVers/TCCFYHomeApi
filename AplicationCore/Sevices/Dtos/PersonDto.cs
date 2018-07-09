@@ -6,7 +6,7 @@ namespace AplicationCore.Sevices.Dtos
 {
     public class PersonDto : BaseDto
     {
-        public string PersonId { get; set; }
+        public int PersonId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string BirthdayDate { get; set; }

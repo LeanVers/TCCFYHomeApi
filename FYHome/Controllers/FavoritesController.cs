@@ -11,31 +11,31 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace FYHome.Controllers
 {
     /// <summary>
-    /// Controller Addresses
+    /// Controller Favorites
     /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AddressesController : ControllerBase
+    public class FavoritesController : ControllerBase
     {
-        private readonly IAddressService _addressService;
+        private readonly IFavoriteService _favoriteService;
 
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="addressService"></param>
-        public AddressesController(IAddressService addressService)
+        /// <param name="favoriteService"></param>
+        public FavoritesController(IFavoriteService favoriteService)
         {
-            _addressService = addressService;
+            _favoriteService = favoriteService;
         }
 
         /// <summary>
-        /// Cadastra uma endereço na aplicação
+        /// Salva um Favorito na aplicação
         /// </summary>
-        /// <param name="addressDto">Objeto Pessoa</param>
+        /// <param name="favoriteDto">Objeto Favorite</param>
         /// <returns></returns>        
         [HttpPost]
-        [SwaggerOperation(Tags = new[] { "Address" })]
-        public async Task<IActionResult> PostAsync([FromBody] AddressDto addressDto)
+        [SwaggerOperation(Tags = new[] { "Favorite" })]
+        public async Task<IActionResult> PostAsync([FromBody] FavoriteDto favoriteDto)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _addressService.AddAddress(addressDto);
+                await _favoriteService.AddFavorite(favoriteDto);
             }
             catch (Exception ex)
             {
@@ -55,13 +55,13 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
-        /// Atualiza dados do Endereço
+        /// Atualiza dados do Favorito
         /// </summary>
-        /// <param name="addressDto"></param>
+        /// <param name="favoriteDto"></param>
         /// <returns></returns>
         [HttpPut]
-        [SwaggerOperation(Tags = new[] { "Address" })]
-        public async Task<IActionResult> PutAsync([FromBody] AddressDto addressDto)
+        [SwaggerOperation(Tags = new[] { "Favorite" })]
+        public async Task<IActionResult> PutAsync([FromBody] FavoriteDto favoriteDto)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _addressService.UpdateAddress(addressDto);
+                await _favoriteService.UpdateFavorite(favoriteDto);
             }
             catch (Exception ex)
             {
@@ -81,11 +81,11 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
-        /// Retorna todos os endereços cadastrados
+        /// Retorna todos os Favoritos cadastrados
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Tags = new[] { "Address" })]
+        [SwaggerOperation(Tags = new[] { "Favorite" })]
         public async Task<IActionResult> GetAllAsync()
         {
             try
@@ -95,14 +95,14 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var Address = await _addressService.GetAllAddress();
+                var Favorite = await _favoriteService.GetAllFavorite();
 
-                if (Address == null)
+                if (Favorite == null)
                 {
-                    return NotFound("Não Encontrado nenhum endereço!");
+                    return NotFound("Não Encontrado nenhum favorito!");
                 }
 
-                return Ok(Address);
+                return Ok(Favorite);
             }
             catch (Exception ex)
             {
@@ -111,12 +111,12 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
-        /// Retorna o endereço por Id
+        /// Retorna o Favorito por Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Tags = new[] { "Address" })]
-        public async Task<IActionResult> GetAsync(int addressId)
+        [SwaggerOperation(Tags = new[] { "Favorite" })]
+        public async Task<IActionResult> GetAsync(int favoriteId)
         {
             try
             {
@@ -125,14 +125,14 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var Address = await _addressService.GetAddress(addressId);
+                var Favorite = await _favoriteService.GetFavorite(favoriteId);
 
-                if (Address == null)
+                if (Favorite == null)
                 {
-                    return NotFound("Não Encontrado nenhum endereço!");
+                    return NotFound("Não Encontrado nenhum favorito!");
                 }
 
-                return Ok(Address);
+                return Ok(Favorite);
             }
             catch (Exception ex)
             {
