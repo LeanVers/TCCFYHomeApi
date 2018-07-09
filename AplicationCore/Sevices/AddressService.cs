@@ -1,6 +1,7 @@
 ﻿using AplicationCore.Entities;
 using AplicationCore.Interfaces;
 using AplicationCore.Sevices.Dtos;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,10 +11,10 @@ namespace AplicationCore.Sevices
 {
     public interface IAddressService
     {
-        Task<Address> AddAddress(AddressDto address);
-        Task<IEnumerable<Address>> GetAllAddress();
-        Task<Address> UpdateAddress(int addressId, AddressDto addressDto);
-        Task<Address> GetAddress(int addressId);
+        Task<AddressDto> AddAddress(AddressDto address);
+        Task<IEnumerable<AddressDto>> GetAllAddress();
+        Task<AddressDto> UpdateAddress(AddressDto addressDto);
+        Task<AddressDto> GetAddress(int addressId);
     }
 
     public class AddressService : IAddressService
@@ -33,40 +34,42 @@ namespace AplicationCore.Sevices
             _asyncAddressRepository = addressAsyncRepository;
         }
 
-        public async Task<Address> AddAddress(AddressDto addressDto)
+        public async Task<AddressDto> AddAddress(AddressDto addressDto)
         {
-            this._address = new Address();
-            this._address.AddAddress(addressDto);
+            var address = Mapper.Map<Address>(addressDto);
 
-            this._address = await _asyncAddressRepository.AddAsync(this._address);
+            address.SetValuesBase();
 
-            return _address;
+            this._address = await _asyncAddressRepository.AddAsync(address);
+
+            return Mapper.Map<AddressDto>(this._address);
         }
 
-        public async Task<IEnumerable<Address>> GetAllAddress()
+        public async Task<IEnumerable<AddressDto>> GetAllAddress()
         {
             var people = await _asyncAddressRepository.ListAllAsync();
 
-            return people;
+            return Mapper.Map<IEnumerable<AddressDto>>(people);
         }
 
-        public async Task<Address> GetAddress(int addressId)
+        public async Task<AddressDto> GetAddress(int addressId)
         {
             var Address = await _asyncAddressRepository.GetByIdAsync(addressId);
 
-            return Address;
+            return Mapper.Map<AddressDto>(Address);
         }
 
-        public async Task<Address> UpdateAddress(int addressId, AddressDto addressDto)
+        public async Task<AddressDto> UpdateAddress(AddressDto addressDto)
         {
             try
             {
-                this._address = new Address();
-                this._address.AddAddress(addressDto, addressId);
+                var address = Mapper.Map<Address>(addressDto);
 
-                await _asyncAddressRepository.UpdateAsync(_address);
+                address.SetValuesBase();
 
-                return _address;
+                await _asyncAddressRepository.UpdateAsync(address);
+
+                return Mapper.Map<AddressDto>(address);
             }
             catch
             {

@@ -18,35 +18,6 @@ namespace AplicationCore.Entities
         public string Neighborhood { get; set; }
         public int PersonId { get; set; }
 
-        //public Person Person { get; set; }
-
-        public void AddRecordFilter(RecordFilterDto recordFilterDto)
-        {
-
-
-            if (recordFilterDto != null)
-            {
-                this.Rooms = recordFilterDto.Rooms;
-                this.ParkingSpaces = recordFilterDto.ParkingSpaces;
-                this.SalePriceMin = recordFilterDto.SalePriceMin;
-                this.SalePriceMax = recordFilterDto.SalePriceMax;
-                this.State = recordFilterDto.State;
-                this.City = recordFilterDto.City;
-                this.Uf = recordFilterDto.Uf;
-                this.Neighborhood = recordFilterDto.Neighborhood;
-                this.PersonId = recordFilterDto.PersonId;
-                this.RecordDate = DateTime.Now;
-                this.Active = true;
-            }
-        }
-
-        public void AddRecordFilter(RecordFilterDto recordFilter, int recordFilterId)
-        {
-            if (recordFilter != null)
-            {
-                this.RecordFilterId = recordFilterId;
-                AddRecordFilter(recordFilter);
-            }
-        }
+        public Person Person { get; set; }
     }
 }

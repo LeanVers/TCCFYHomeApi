@@ -10,29 +10,32 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace FYHome.Controllers
 {
+    /// <summary>
+    /// Controller Residencial Properties
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class TypeResidencialPropertyController : ControllerBase
+    public class ResidencialPropertiesController : ControllerBase
     {
-        private readonly ITypeResidencialPropertyService _typeResidencialPropertyService;
+        private readonly IResidencialPropertyService _residencialPropertyService;
 
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="peopleService"></param>
-        public TypeResidencialPropertyController(ITypeResidencialPropertyService peopleService)
+        /// <param name="residencialPropertyService"></param>
+        public ResidencialPropertiesController(IResidencialPropertyService residencialPropertyService)
         {
-            _typeResidencialPropertyService = peopleService;
+            _residencialPropertyService = residencialPropertyService;
         }
 
         /// <summary>
-        /// Cadastra um tipo de Imóvel
+        /// Cadastra um Imóvel na aplicação
         /// </summary>
-        /// <param name="typeResidencialPropertyDto">Objeto Pessoa</param>
+        /// <param name="residencialPropertyDto">Objeto Pessoa</param>
         /// <returns></returns>        
         [HttpPost]
-        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
-        public async Task<IActionResult> PostAsync([FromBody] TypeResidencialPropertyDto typeResidencialPropertyDto)
+        [SwaggerOperation(Tags = new[] { "ResidencialProperty" })]
+        public async Task<IActionResult> PostAsync([FromBody] ResidencialPropertyDto residencialPropertyDto)
         {
             try
             {
@@ -41,7 +44,7 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _typeResidencialPropertyService.AddTypeResidencialProperty(typeResidencialPropertyDto);
+                await _residencialPropertyService.AddResidencialProperty(residencialPropertyDto);
             }
             catch (Exception ex)
             {
@@ -50,16 +53,15 @@ namespace FYHome.Controllers
 
             return NoContent();
         }
-        
+
         /// <summary>
-        /// Atualiza dados do Tipo de Imóvel
+        /// Atualiza dados do Imóvel
         /// </summary>
-        /// <param name="typeResidencialPropertyId"></param>
-        /// <param name="typeResidencialPropertyDto"></param>
+        /// <param name="residencialPropertyDto"></param>
         /// <returns></returns>
         [HttpPut]
-        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
-        public async Task<IActionResult> PutAsync(int typeResidencialPropertyId, [FromBody] TypeResidencialPropertyDto typeResidencialPropertyDto)
+        [SwaggerOperation(Tags = new[] { "ResidencialProperty" })]
+        public async Task<IActionResult> PutAsync([FromBody] ResidencialPropertyDto residencialPropertyDto)
         {
             try
             {
@@ -68,7 +70,7 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _typeResidencialPropertyService.UpdateTypeResidencialProperty(typeResidencialPropertyId, typeResidencialPropertyDto);
+                await _residencialPropertyService.UpdateResidencialProperty(residencialPropertyDto);
             }
             catch (Exception ex)
             {
@@ -79,11 +81,11 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
-        /// Retorna todos os Tipos de Imóvel
+        /// Retorna todos os Imóveis cadastrados
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
+        [SwaggerOperation(Tags = new[] { "ResidencialProperty" })]
         public async Task<IActionResult> GetAllAsync()
         {
             try
@@ -93,14 +95,14 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var people = await _typeResidencialPropertyService.GetAllTypeResidencialProperty();
+                var ResidencialProperty = await _residencialPropertyService.GetAllResidencialProperty();
 
-                if(people == null)
+                if (ResidencialProperty == null)
                 {
-                    return NotFound("Não Encontrado nenhum tipo de Imóvel!");
+                    return NotFound("Não Encontrado nenhum Imóvel!");
                 }
 
-                return Ok(people);
+                return Ok(ResidencialProperty);
             }
             catch (Exception ex)
             {
@@ -109,12 +111,12 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
-        /// Retorna todas as pessoas cadastradas
+        /// Retorna o Imóvel por Id
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
-        public async Task<IActionResult> GetAsync(int typeResidencialPropertyId)
+        [SwaggerOperation(Tags = new[] { "ResidencialProperty" })]
+        public async Task<IActionResult> GetAsync(int residencialPropertyId)
         {
             try
             {
@@ -123,14 +125,14 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var people = await _typeResidencialPropertyService.GetTypeResidencialProperty(typeResidencialPropertyId);
+                var ResidencialProperty = await _residencialPropertyService.GetResidencialProperty(residencialPropertyId);
 
-                if (people == null)
+                if (ResidencialProperty == null)
                 {
-                    return NotFound("Não Encontrado nenhum tipo de Imóvel!");
+                    return NotFound("Não Encontrado nenhum Imóvel!");
                 }
 
-                return Ok(people);
+                return Ok(ResidencialProperty);
             }
             catch (Exception ex)
             {

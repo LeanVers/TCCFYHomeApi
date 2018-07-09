@@ -12,27 +12,27 @@ namespace FYHome.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class RecordFilterController : ControllerBase
+    public class TypesResidencialPropertyController : ControllerBase
     {
-        private readonly IRecordFilterService _recordFilterService;
+        private readonly ITypeResidencialPropertyService _typeResidencialPropertyService;
 
         /// <summary>
         /// Construtor
         /// </summary>
-        /// <param name="recordFilterService"></param>
-        public RecordFilterController(IRecordFilterService recordFilterService)
+        /// <param name="peopleService"></param>
+        public TypesResidencialPropertyController(ITypeResidencialPropertyService peopleService)
         {
-            _recordFilterService = recordFilterService;
+            _typeResidencialPropertyService = peopleService;
         }
 
         /// <summary>
-        /// Cadastra uma filtro na aplicação
+        /// Cadastra um tipo de Imóvel
         /// </summary>
-        /// <param name="recordFilterDto">Objeto Pessoa</param>
+        /// <param name="typeResidencialPropertyDto">Objeto Pessoa</param>
         /// <returns></returns>        
         [HttpPost]
-        [SwaggerOperation(Tags = new[] { "RecordFilter" })]
-        public async Task<IActionResult> PostAsync([FromBody] RecordFilterDto recordFilterDto)
+        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
+        public async Task<IActionResult> PostAsync([FromBody] TypeResidencialPropertyDto typeResidencialPropertyDto)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _recordFilterService.AddRecordFilter(recordFilterDto);
+                await _typeResidencialPropertyService.AddTypeResidencialProperty(typeResidencialPropertyDto);
             }
             catch (Exception ex)
             {
@@ -50,16 +50,16 @@ namespace FYHome.Controllers
 
             return NoContent();
         }
-
+        
         /// <summary>
-        /// Atualiza dados do Endereço
+        /// Atualiza dados do Tipo de Imóvel
         /// </summary>
-        /// <param name="recordFilterId"></param>
-        /// <param name="recordFilterDto"></param>
+        /// <param name="typeResidencialPropertyId"></param>
+        /// <param name="typeResidencialPropertyDto"></param>
         /// <returns></returns>
         [HttpPut]
-        [SwaggerOperation(Tags = new[] { "RecordFilter" })]
-        public async Task<IActionResult> PutAsync(int recordFilterId, [FromBody] RecordFilterDto recordFilterDto)
+        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
+        public async Task<IActionResult> PutAsync([FromBody] TypeResidencialPropertyDto typeResidencialPropertyDto)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _recordFilterService.UpdateRecordFilter(recordFilterId, recordFilterDto);
+                await _typeResidencialPropertyService.UpdateTypeResidencialProperty(typeResidencialPropertyDto);
             }
             catch (Exception ex)
             {
@@ -79,11 +79,11 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
-        /// Retorna todos os filtros cadastrados
+        /// Retorna todos os Tipos de Imóvel
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Tags = new[] { "RecordFilter" })]
+        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
         public async Task<IActionResult> GetAllAsync()
         {
             try
@@ -93,14 +93,14 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var RecordFilter = await _recordFilterService.GetAllRecordFilter();
+                var people = await _typeResidencialPropertyService.GetAllTypeResidencialProperty();
 
-                if (RecordFilter == null)
+                if(people == null)
                 {
-                    return NotFound("Não Encontrado nenhum filtro!");
+                    return NotFound("Não Encontrado nenhum tipo de Imóvel!");
                 }
 
-                return Ok(RecordFilter);
+                return Ok(people);
             }
             catch (Exception ex)
             {
@@ -109,12 +109,12 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
-        /// Retorna o filtro por Id
+        /// Retorna todas as pessoas cadastradas
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [SwaggerOperation(Tags = new[] { "RecordFilter" })]
-        public async Task<IActionResult> GetAsync(int recordFilterId)
+        [SwaggerOperation(Tags = new[] { "TypeResidencialProperty" })]
+        public async Task<IActionResult> GetAsync(int typeResidencialPropertyId)
         {
             try
             {
@@ -123,14 +123,14 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var RecordFilter = await _recordFilterService.GetRecordFilter(recordFilterId);
+                var people = await _typeResidencialPropertyService.GetTypeResidencialProperty(typeResidencialPropertyId);
 
-                if (RecordFilter == null)
+                if (people == null)
                 {
-                    return NotFound("Não Encontrado nenhum filtro!");
+                    return NotFound("Não Encontrado nenhum tipo de Imóvel!");
                 }
 
-                return Ok(RecordFilter);
+                return Ok(people);
             }
             catch (Exception ex)
             {

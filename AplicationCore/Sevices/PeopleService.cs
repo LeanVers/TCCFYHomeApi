@@ -4,16 +4,17 @@ using System.Threading.Tasks;
 using AplicationCore.Entities;
 using AplicationCore.Interfaces;
 using AplicationCore.Sevices.Dtos;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AplicationCore.Sevices
 {
     public interface IPeopleService
     {
-        Task<Person> AddPerson(PersonDto person);
-        Task<IEnumerable<Person>> GetAllPerson();
-        Task<Person> UpdatePerson(int personId, PersonDto personDto);
-        Task<Person> GetPerson(int personId);
+        Task<PersonDto> AddPerson(PersonDto person);
+        Task<IEnumerable<PersonDto>> GetAllPerson();
+        Task<PersonDto> UpdatePerson(PersonDto personDto);
+        Task<PersonDto> GetPerson(int personId);
     }
 
     public class PeopleService : IPeopleService
@@ -33,40 +34,42 @@ namespace AplicationCore.Sevices
             _personAsyncRepository = personAsyncRepository;
         }
 
-        public async Task<Person> AddPerson(PersonDto personDto)
+        public async Task<PersonDto> AddPerson(PersonDto personDto)
         {
-            this._person = new Person();
-            this._person.AddPerson(personDto);
+            var person = Mapper.Map<Person>(personDto);
 
-            this._person = await _personAsyncRepository.AddAsync(this._person);
+            person.SetValuesBase();
 
-            return _person;
+            this._person = await _personAsyncRepository.AddAsync(person);
+
+            return Mapper.Map<PersonDto>(this._person);
         }
 
-        public async Task<IEnumerable<Person>> GetAllPerson()
+        public async Task<IEnumerable<PersonDto>> GetAllPerson()
         {
             var people = await _personAsyncRepository.ListAllAsync();
 
-            return people;
+            return Mapper.Map<IEnumerable<PersonDto>>(people);
         }
 
-        public async Task<Person> GetPerson(int personId)
+        public async Task<PersonDto> GetPerson(int personId)
         {
             var person = await _personAsyncRepository.GetByIdAsync(personId);
 
-            return person;
+            return Mapper.Map<PersonDto>(person);
         }
 
-        public async Task<Person> UpdatePerson(int personId, PersonDto personDto)
+        public async Task<PersonDto> UpdatePerson(PersonDto personDto)
         {
             try
             {
-                this._person = new Person();
-                this._person.AddPerson(personDto, personId);
+                var person = Mapper.Map<Person>(personDto);
 
-                await _personAsyncRepository.UpdateAsync(_person);
+                person.SetValuesBase();
 
-                return _person;
+                await _personAsyncRepository.UpdateAsync(person);
+
+                return Mapper.Map<PersonDto>(person);
             }
             catch
             {

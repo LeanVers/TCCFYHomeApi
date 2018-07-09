@@ -1,6 +1,7 @@
 ﻿using AplicationCore.Entities;
 using AplicationCore.Interfaces;
 using AplicationCore.Sevices.Dtos;
+using AutoMapper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,10 @@ namespace AplicationCore.Sevices
 {
     public interface IRecordFilterService
     {
-        Task<RecordFilter> AddRecordFilter(RecordFilterDto recordFilter);
-        Task<IEnumerable<RecordFilter>> GetAllRecordFilter();
-        Task<RecordFilter> UpdateRecordFilter(int recordFilterId, RecordFilterDto recordFilterDto);
-        Task<RecordFilter> GetRecordFilter(int recordFilterId);
+        Task<RecordFilterDto> AddRecordFilter(RecordFilterDto recordFilter);
+        Task<IEnumerable<RecordFilterDto>> GetAllRecordFilter();
+        Task<RecordFilterDto> UpdateRecordFilter(RecordFilterDto recordFilterDto);
+        Task<RecordFilterDto> GetRecordFilter(int recordFilterId);
     }
 
     public class RecordFilterService : IRecordFilterService
@@ -34,42 +35,42 @@ namespace AplicationCore.Sevices
             _recordFilterAsyncRepository = recordAsyncFilterRepository;
         }
 
-        public async Task<RecordFilter> AddRecordFilter(RecordFilterDto recordFilterDto)
+        public async Task<RecordFilterDto> AddRecordFilter(RecordFilterDto recordFilterDto)
         {
-            this._recordFilter = JsonConvert.DeserializeObject<RecordFilter>(JsonConvert.SerializeObject(recordFilterDto));
+            var recordFilter = Mapper.Map<RecordFilter>(recordFilterDto);
 
+            recordFilter.SetValuesBase();
 
-            //this._recordFilter.AddRecordFilter(recordFilterDto);
+            this._recordFilter = await _recordFilterAsyncRepository.AddAsync(recordFilter);
 
-            this._recordFilter = await _recordFilterAsyncRepository.AddAsync(this._recordFilter);
-
-            return _recordFilter;
+            return Mapper.Map<RecordFilterDto>(this._recordFilter);
         }
 
-        public async Task<IEnumerable<RecordFilter>> GetAllRecordFilter()
+        public async Task<IEnumerable<RecordFilterDto>> GetAllRecordFilter()
         {
-            var people = await _recordFilterAsyncRepository.ListAllAsync();
+            var recordFilter = await _recordFilterAsyncRepository.ListAllAsync();
 
-            return people;
+            return Mapper.Map<IEnumerable<RecordFilterDto>>(recordFilter);
         }
 
-        public async Task<RecordFilter> GetRecordFilter(int recordFilterId)
+        public async Task<RecordFilterDto> GetRecordFilter(int recordFilterId)
         {
             var RecordFilter = await _recordFilterAsyncRepository.GetByIdAsync(recordFilterId);
 
-            return RecordFilter;
+            return Mapper.Map<RecordFilterDto>(RecordFilter);
         }
 
-        public async Task<RecordFilter> UpdateRecordFilter(int recordFilterId, RecordFilterDto recordFilterDto)
+        public async Task<RecordFilterDto> UpdateRecordFilter(RecordFilterDto recordFilterDto)
         {
             try
             {
-                this._recordFilter = new RecordFilter();
-                this._recordFilter.AddRecordFilter(recordFilterDto, recordFilterId);
+                var recordFilter = Mapper.Map<RecordFilter>(recordFilterDto);
 
-                await _recordFilterAsyncRepository.UpdateAsync(_recordFilter);
+                recordFilter.SetValuesBase();
 
-                return _recordFilter;
+                await _recordFilterAsyncRepository.UpdateAsync(recordFilter);
+
+                return Mapper.Map<RecordFilterDto>(recordFilter);
             }
             catch
             {
