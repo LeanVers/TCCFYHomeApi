@@ -13,6 +13,9 @@ namespace AplicationCore.Entities
         public string AdditionalInfo { get; set; }
         public decimal SalePrice { get; set; }
         public string Description { get; set; }
+        public int AddressId { get; set; }
+        public int TypeResidencialPropertyId { get; set; }
+        public int PersonId { get; set; }
 
         public Address Address { get; set; }
         public TypeResidencialProperty TypeResidencialProperty { get; set; }

@@ -1,6 +1,7 @@
 ﻿using AplicationCore.Entities;
 using AplicationCore.Interfaces;
 using AplicationCore.Sevices.Dtos;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,10 +11,10 @@ namespace AplicationCore.Sevices
 {
     public interface ITypeResidencialPropertyService
     {
-        Task<TypeResidencialProperty> AddTypeResidencialProperty(TypeResidencialPropertyDto typeResidencialProperty);
-        Task<IEnumerable<TypeResidencialProperty>> GetAllTypeResidencialProperty();
-        Task<TypeResidencialProperty> UpdateTypeResidencialProperty(int typeResidencialPropertyId, TypeResidencialPropertyDto typeResidencialPropertyDto);
-        Task<TypeResidencialProperty> GetTypeResidencialProperty(int typeResidencialPropertyId);
+        Task<TypeResidencialPropertyDto> AddTypeResidencialProperty(TypeResidencialPropertyDto typeResidencialProperty);
+        Task<IEnumerable<TypeResidencialPropertyDto>> GetAllTypeResidencialProperty();
+        Task<TypeResidencialPropertyDto> UpdateTypeResidencialProperty(TypeResidencialPropertyDto typeResidencialPropertyDto);
+        Task<TypeResidencialPropertyDto> GetTypeResidencialProperty(int typeResidencialPropertyId);
     }
 
     public class TypeResidencialPropertyService : ITypeResidencialPropertyService
@@ -33,40 +34,42 @@ namespace AplicationCore.Sevices
             _asyncTypeResidencialPropertyRepository = typeResidencialPropertyAsyncRepository;
         }
 
-        public async Task<TypeResidencialProperty> AddTypeResidencialProperty(TypeResidencialPropertyDto typeResidencialPropertyDto)
+        public async Task<TypeResidencialPropertyDto> AddTypeResidencialProperty(TypeResidencialPropertyDto typeResidencialPropertyDto)
         {
-            this._typeResidencialProperty = new TypeResidencialProperty();
-            this._typeResidencialProperty.AddTypeResidencialProperty(typeResidencialPropertyDto);
+            var typeResidencialProperty = Mapper.Map<TypeResidencialProperty>(typeResidencialPropertyDto);
 
-            this._typeResidencialProperty = await _asyncTypeResidencialPropertyRepository.AddAsync(this._typeResidencialProperty);
+            typeResidencialProperty.SetValuesBase();
 
-            return _typeResidencialProperty;
+            this._typeResidencialProperty = await _asyncTypeResidencialPropertyRepository.AddAsync(typeResidencialProperty);
+
+            return Mapper.Map<TypeResidencialPropertyDto>(this._typeResidencialProperty);
         }
 
-        public async Task<IEnumerable<TypeResidencialProperty>> GetAllTypeResidencialProperty()
+        public async Task<IEnumerable<TypeResidencialPropertyDto>> GetAllTypeResidencialProperty()
         {
             var typeResidencialProperty = await _asyncTypeResidencialPropertyRepository.ListAllAsync();
 
-            return typeResidencialProperty;
+            return Mapper.Map<IEnumerable<TypeResidencialPropertyDto>>(typeResidencialProperty);
         }
 
-        public async Task<TypeResidencialProperty> GetTypeResidencialProperty(int typeResidencialPropertyId)
+        public async Task<TypeResidencialPropertyDto> GetTypeResidencialProperty(int typeResidencialPropertyId)
         {
             var typeResidencialProperty = await _asyncTypeResidencialPropertyRepository.GetByIdAsync(typeResidencialPropertyId);
 
-            return typeResidencialProperty;
+            return Mapper.Map<TypeResidencialPropertyDto>(typeResidencialProperty);
         }
 
-        public async Task<TypeResidencialProperty> UpdateTypeResidencialProperty(int typeResidencialPropertyId, TypeResidencialPropertyDto typeResidencialPropertyDto)
+        public async Task<TypeResidencialPropertyDto> UpdateTypeResidencialProperty(TypeResidencialPropertyDto typeResidencialPropertyDto)
         {
             try
             {
-                this._typeResidencialProperty = new TypeResidencialProperty();
-                this._typeResidencialProperty.AddTypeResidencialProperty(typeResidencialPropertyDto, typeResidencialPropertyId);
+                var typeResidencialProperty = Mapper.Map<TypeResidencialProperty>(typeResidencialPropertyDto);
 
-                await _asyncTypeResidencialPropertyRepository.UpdateAsync(_typeResidencialProperty);
+                typeResidencialProperty.SetValuesBase();
 
-                return _typeResidencialProperty;
+                await _asyncTypeResidencialPropertyRepository.UpdateAsync(typeResidencialProperty);
+
+                return Mapper.Map<TypeResidencialPropertyDto>(typeResidencialProperty);
             }
             catch
             {

@@ -13,30 +13,5 @@ namespace AplicationCore.Entities
         public string Phone { get; set; }
         public string Passphrase { get; set; }
         public string KeyPassphrase { get; set; }
-
-        public void AddPerson(PersonDto person)
-        {
-            if(person != null)
-            {
-                this.Name = person.Name;
-                this.Email = person.Email;
-                this.BirthdayDate = DateTime.Parse(person.BirthdayDate);
-                this.CPF = person.CPF;
-                this.Phone = person.Phone;
-                this.Passphrase = person.Passphrase;
-                this.KeyPassphrase = person.Passphrase;
-                this.RecordDate = DateTime.Now;
-                this.Active = true;
-            }
-        }
-
-        public void AddPerson(PersonDto person, int personId)
-        {
-            if (person != null)
-            {
-                this.PersonId = personId;
-                AddPerson(person);
-            }
-        }
     }
 }

@@ -6,9 +6,8 @@ using System.Text;
 
 namespace AplicationCore.Sevices.Dtos
 {
-    public class RecordFilterDto
+    public class RecordFilterDto : BaseDto
     {
-        [JsonIgnore]
         public int RecordFilterId { get; set; }
         public int Rooms { get; set; }
         public int ParkingSpaces { get; set; }
@@ -17,7 +16,7 @@ namespace AplicationCore.Sevices.Dtos
         public string State { get; set; }
         public string City { get; set; }
         public string Uf { get; set; }
-        public string Neighborhood { get; set; }        
+        public string Neighborhood { get; set; }
         public int PersonId { get; set; }
     }
 }

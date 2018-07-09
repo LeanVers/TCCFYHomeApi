@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AplicationCore.Sevices.Dtos
 {
-    public class ResidencialPropertyDto
+    public class ResidencialPropertyDto : BaseDto
     {
         public int ResidencialPropertyId { get; set; }
         public int Rooms { get; set; }

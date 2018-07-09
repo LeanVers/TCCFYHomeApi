@@ -18,6 +18,7 @@ using AplicationCore.Sevices;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using System.Reflection;
+using AplicationCore.Sevices.AutoMapper;
 
 namespace FYHome
 {
@@ -26,6 +27,7 @@ namespace FYHome
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AutoMapperConfig.RegisterMapping();
         }
 
         public IConfiguration Configuration { get; }
@@ -43,6 +45,7 @@ namespace FYHome
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ITypeResidencialPropertyService, TypeResidencialPropertyService>();
             services.AddScoped<IRecordFilterService, RecordFilterService>();
+            services.AddScoped<IResidencialPropertyService, ResidencialPropertyService>();
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 

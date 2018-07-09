@@ -4,8 +4,9 @@ using System.Text;
 
 namespace AplicationCore.Sevices.Dtos
 {
-    public class AddressDto
+    public class AddressDto : BaseDto
     {
+        public int AddressId { get; set; }
         public string CEP { get; set; }
         public string Street { get; set; }
         public int Number { get; set; }

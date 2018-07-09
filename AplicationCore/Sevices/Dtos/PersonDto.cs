@@ -4,8 +4,9 @@ using System.Text;
 
 namespace AplicationCore.Sevices.Dtos
 {
-    public class PersonDto
+    public class PersonDto : BaseDto
     {
+        public string PersonId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string BirthdayDate { get; set; }

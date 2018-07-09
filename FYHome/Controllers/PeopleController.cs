@@ -60,7 +60,7 @@ namespace FYHome.Controllers
         /// <returns></returns>
         [HttpPut]
         [SwaggerOperation(Tags = new[] { "People" })]
-        public async Task<IActionResult> PutAsync(int personId, [FromBody] PersonDto personDto)
+        public async Task<IActionResult> PutAsync([FromBody] PersonDto personDto)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace FYHome.Controllers
                     return BadRequest(ModelState);
                 }
 
-                await _peopleService.UpdatePerson(personId, personDto);
+                await _peopleService.UpdatePerson(personDto);
             }
             catch (Exception ex)
             {
