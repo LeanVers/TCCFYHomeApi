@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AplicationCore.Entities;
 using AplicationCore.Interfaces;
 using AplicationCore.Sevices.Dtos;
+using AplicationCore.Specifications;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -15,6 +17,7 @@ namespace AplicationCore.Sevices
         Task<IEnumerable<PersonDto>> GetAllPerson();
         Task<PersonDto> UpdatePerson(PersonDto personDto);
         Task<PersonDto> GetPerson(int personId);
+        Task<PersonDto> GetPersonLogin(string email, string passphrase);
     }
 
     public class PeopleService : IPeopleService
@@ -75,6 +78,14 @@ namespace AplicationCore.Sevices
             {
                 return null;
             }
+        }
+
+        public async Task<PersonDto> GetPersonLogin(string email, string passphrase)
+        {
+            var personSpec = new PeopleSpecification(email, passphrase);
+            var entities = (await _personAsyncRepository.ListAsync(personSpec)).FirstOrDefault();
+
+            return Mapper.Map<PersonDto>(entities);
         }
     }
 }

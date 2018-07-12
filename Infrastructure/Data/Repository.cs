@@ -6,12 +6,14 @@ using AplicationCore.Entities;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Data
 {
     public class Repository<T> : IRepository<T>, IAsyncRepository<T> where T : BaseEntity
     {
         protected readonly FYHomeContext _dbContext;
+        protected DbSet<T> _entity;
 
         public Repository(FYHomeContext dbContext)
         {
@@ -38,6 +40,24 @@ namespace Infrastructure.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+        public async Task<List<T>> ListAsync(ISpecification<T> spec)
+        {
+            // fetch a Queryable that includes all expression-based includes
+            var queryableResultWithIncludes = spec.Includes
+                .Aggregate(_dbContext.Set<T>().AsQueryable(),
+                    (current, include) => current.Include(include));
+
+            // modify the IQueryable to include any string-based include statements
+            var secondaryResult = spec.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+
+            // return the result of the query using the specification's criteria expression
+            return await secondaryResult
+                            .Where(spec.Criteria)
+                            .ToListAsync();
+        }
+
         public T Add(T entity)
         {
             _dbContext.Set<T>().Add(entity);
@@ -59,6 +79,7 @@ namespace Infrastructure.Data
             _dbContext.Entry(entity).State = EntityState.Modified;
             _dbContext.SaveChanges();
         }
+
         public async Task UpdateAsync(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
@@ -70,6 +91,7 @@ namespace Infrastructure.Data
             _dbContext.Set<T>().Remove(entity);
             _dbContext.SaveChanges();
         }
+
         public async Task DeleteAsync(T entity)
         {
             _dbContext.Set<T>().Remove(entity);

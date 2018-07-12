@@ -138,5 +138,40 @@ namespace FYHome.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Login User in Application
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="passphrase"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [SwaggerOperation(Tags = new[] { "People" })]
+        public async Task<IActionResult> GetPersonLogin(string email, string passphrase)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return NotFound("Email é campo Obrigatório");
+            }
+
+            if (string.IsNullOrEmpty(passphrase))
+            {
+                return NotFound("Senha é campo Obrigatório");
+            }
+
+            var people = await _peopleService.GetPersonLogin(email, passphrase);
+
+            if (people == null)
+            {
+                return NotFound("Usuário não existe");
+            }
+
+            return Ok(people);
+        }
     }
 }
