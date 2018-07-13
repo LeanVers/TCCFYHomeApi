@@ -12,9 +12,9 @@ namespace AplicationCore.Sevices
     public interface IResidencialPropertyService
     {
         Task<ResidencialPropertyDto> AddResidencialProperty(ResidencialPropertyDto recordFilter);
-        Task<IEnumerable<ResidencialPropertyDto>> GetAllResidencialProperty();
+        Task<IEnumerable<ResidencialPropertyGetDto>> GetAllResidencialProperty();
         Task<ResidencialPropertyDto> UpdateResidencialProperty(ResidencialPropertyDto recordFilterDto);
-        Task<ResidencialPropertyDto> GetResidencialProperty(int recordFilterId);
+        Task<ResidencialPropertyGetDto> GetResidencialProperty(int recordFilterId);
     }
 
     public class ResidencialPropertyService : IResidencialPropertyService
@@ -45,18 +45,18 @@ namespace AplicationCore.Sevices
             return Mapper.Map<ResidencialPropertyDto>(this._residencialProperty);
         }
 
-        public async Task<IEnumerable<ResidencialPropertyDto>> GetAllResidencialProperty()
+        public async Task<IEnumerable<ResidencialPropertyGetDto>> GetAllResidencialProperty()
         {
-            var people = await _residencialPropertyAsyncRepository.ListAllAsync();
+            var residencialProperty = await _residencialPropertyAsyncRepository.ListAllAsync();
 
-            return Mapper.Map<IEnumerable<ResidencialPropertyDto>>(people);
+            return Mapper.Map<IEnumerable<ResidencialPropertyGetDto>>(residencialProperty);
         }
 
-        public async Task<ResidencialPropertyDto> GetResidencialProperty(int residencialPropertyId)
+        public async Task<ResidencialPropertyGetDto> GetResidencialProperty(int residencialPropertyId)
         {
             var residencialProperty = await _residencialPropertyAsyncRepository.GetByIdAsync(residencialPropertyId);
 
-            return Mapper.Map<ResidencialPropertyDto>(residencialProperty);
+            return Mapper.Map<ResidencialPropertyGetDto>(residencialProperty);
         }
 
         public async Task<ResidencialPropertyDto> UpdateResidencialProperty(ResidencialPropertyDto residencialPropertyDto)

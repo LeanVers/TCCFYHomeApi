@@ -16,6 +16,8 @@ namespace AplicationCore.Sevices.AutoMapper
                 cfg.CreateMap<TypeResidencialProperty, TypeResidencialPropertyDto>().ReverseMap();
                 cfg.CreateMap<ResidencialProperty, ResidencialPropertyDto>().ReverseMap();
                 cfg.CreateMap<Favorite, FavoriteDto>().ReverseMap();
+
+                cfg.CreateMap<ResidencialProperty, ResidencialPropertyGetDto>().ReverseMap();
             });
         }
     }

@@ -18,14 +18,24 @@ namespace FYHome.Controllers
     public class ResidencialPropertiesController : ControllerBase
     {
         private readonly IResidencialPropertyService _residencialPropertyService;
+        private readonly IAddressService _addressService;
+        private readonly IPeopleService _peopleService;
+        private readonly ITypeResidencialPropertyService _typeResidencialPropertyService;
+
 
         /// <summary>
         /// Construtor
         /// </summary>
         /// <param name="residencialPropertyService"></param>
-        public ResidencialPropertiesController(IResidencialPropertyService residencialPropertyService)
+        public ResidencialPropertiesController(IResidencialPropertyService residencialPropertyService,
+                                                IAddressService addressService,
+                                                IPeopleService peopleService,
+                                                ITypeResidencialPropertyService typeResidencialPropertyService)
         {
             _residencialPropertyService = residencialPropertyService;
+            _addressService = addressService;
+            _peopleService = peopleService;
+            _typeResidencialPropertyService = typeResidencialPropertyService;
         }
 
         /// <summary>
@@ -97,6 +107,14 @@ namespace FYHome.Controllers
 
                 var ResidencialProperty = await _residencialPropertyService.GetAllResidencialProperty();
 
+
+                foreach (var res in ResidencialProperty)
+                {                    
+                    res.Address = await _addressService.GetAddress(res.AddressId);
+                    res.Person = await _peopleService.GetPerson(res.PersonId);
+                    res.TypeResidencialProperty = await _typeResidencialPropertyService.GetTypeResidencialProperty(res.TypeResidencialPropertyId);
+                }
+
                 if (ResidencialProperty == null)
                 {
                     return NotFound("Não Encontrado nenhum Imóvel!");
@@ -126,6 +144,10 @@ namespace FYHome.Controllers
                 }
 
                 var ResidencialProperty = await _residencialPropertyService.GetResidencialProperty(residencialPropertyId);
+
+                ResidencialProperty.Address = await _addressService.GetAddress(ResidencialProperty.AddressId);
+                ResidencialProperty.Person = await _peopleService.GetPerson(ResidencialProperty.PersonId);
+                ResidencialProperty.TypeResidencialProperty = await _typeResidencialPropertyService.GetTypeResidencialProperty(ResidencialProperty.TypeResidencialPropertyId);
 
                 if (ResidencialProperty == null)
                 {
