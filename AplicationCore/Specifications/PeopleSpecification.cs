@@ -11,5 +11,10 @@ namespace AplicationCore.Specifications
             : base(b => b.Email == email && b.Passphrase == passphrase)
         {
         }
+
+        public PeopleSpecification(string email)
+            : base(b => b.Email == email)
+        {
+        }
     }
 }

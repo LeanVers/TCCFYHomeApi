@@ -43,6 +43,8 @@ namespace AplicationCore.Sevices
 
             person.SetValuesBase();
 
+            person.CriptografarSenha();
+
             this._person = await _personAsyncRepository.AddAsync(person);
 
             return Mapper.Map<PersonDto>(this._person);

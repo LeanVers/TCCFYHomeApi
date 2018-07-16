@@ -129,6 +129,44 @@ namespace FYHome.Controllers
         }
 
         /// <summary>
+        /// Retorna todos os Imóveis cadastrados pelo usuário
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [SwaggerOperation(Tags = new[] { "ResidencialProperty" })]
+        public async Task<IActionResult> GetAllAsyncById(int personId)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var ResidencialProperty = await _residencialPropertyService.GetAllResidencialProperty(personId);
+
+
+                foreach (var res in ResidencialProperty)
+                {
+                    res.Address = await _addressService.GetAddress(res.AddressId);
+                    res.Person = await _peopleService.GetPerson(res.PersonId);
+                    res.TypeResidencialProperty = await _typeResidencialPropertyService.GetTypeResidencialProperty(res.TypeResidencialPropertyId);
+                }
+
+                if (ResidencialProperty == null)
+                {
+                    return NotFound("Não Encontrado nenhum Imóvel!");
+                }
+
+                return Ok(ResidencialProperty);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Retorna o Imóvel por Id
         /// </summary>
         /// <returns></returns>

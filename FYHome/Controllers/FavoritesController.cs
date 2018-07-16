@@ -18,14 +18,26 @@ namespace FYHome.Controllers
     public class FavoritesController : ControllerBase
     {
         private readonly IFavoriteService _favoriteService;
+        private readonly IResidencialPropertyService _residencialPropertyService;
+        private readonly IAddressService _addressService;
+        private readonly IPeopleService _peopleService;
+        private readonly ITypeResidencialPropertyService _typeResidencialPropertyService;
 
         /// <summary>
         /// Construtor
         /// </summary>
         /// <param name="favoriteService"></param>
-        public FavoritesController(IFavoriteService favoriteService)
+        public FavoritesController(IFavoriteService favoriteService, 
+                                    IResidencialPropertyService residencialPropertyService,
+                                    IAddressService addressService,
+                                    IPeopleService peopleService,
+                                    ITypeResidencialPropertyService typeResidencialPropertyService)
         {
             _favoriteService = favoriteService;
+            _residencialPropertyService = residencialPropertyService;
+            _addressService = addressService;
+            _peopleService = peopleService;
+            _typeResidencialPropertyService = typeResidencialPropertyService;
         }
 
         /// <summary>
@@ -96,6 +108,15 @@ namespace FYHome.Controllers
                 }
 
                 var Favorite = await _favoriteService.GetAllFavorite();
+
+                foreach (var res in Favorite)
+                {
+                    res.ResidecialProperty = await _residencialPropertyService.GetResidencialProperty(res.ResidencialPropertyId);
+                    res.ResidecialProperty.Address = await _addressService.GetAddress(res.ResidecialProperty.AddressId);
+                    res.ResidecialProperty.Person = await _peopleService.GetPerson(res.ResidecialProperty.PersonId);
+                    res.ResidecialProperty.TypeResidencialProperty = await _typeResidencialPropertyService.GetTypeResidencialProperty(res.ResidecialProperty.TypeResidencialPropertyId);
+                    res.Person = await _peopleService.GetPerson(res.PersonID);
+                }
 
                 if (Favorite == null)
                 {

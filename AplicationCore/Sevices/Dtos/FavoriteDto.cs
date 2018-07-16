@@ -9,5 +9,8 @@ namespace AplicationCore.Sevices.Dtos
         public int FavoriteId { get; set; }
         public int PersonID { get; set; }
         public int ResidencialPropertyId { get; set; }
+
+        public PersonDto Person { get; set; }
+        public ResidencialPropertyGetDto ResidecialProperty { get; set; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AplicationCore.Entities;
 using AplicationCore.Interfaces;
 using AplicationCore.Sevices.Dtos;
+using AplicationCore.Specifications;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,8 +15,9 @@ namespace AplicationCore.Sevices
     {
         Task<ResidencialPropertyDto> AddResidencialProperty(ResidencialPropertyDto recordFilter);
         Task<IEnumerable<ResidencialPropertyGetDto>> GetAllResidencialProperty();
+        Task<IEnumerable<ResidencialPropertyGetDto>> GetAllResidencialProperty(int PersonId);
         Task<ResidencialPropertyDto> UpdateResidencialProperty(ResidencialPropertyDto recordFilterDto);
-        Task<ResidencialPropertyGetDto> GetResidencialProperty(int recordFilterId);
+        Task<ResidencialPropertyGetDto> GetResidencialProperty(int residencialPropertyId);
     }
 
     public class ResidencialPropertyService : IResidencialPropertyService
@@ -50,6 +53,14 @@ namespace AplicationCore.Sevices
             var residencialProperty = await _residencialPropertyAsyncRepository.ListAllAsync();
 
             return Mapper.Map<IEnumerable<ResidencialPropertyGetDto>>(residencialProperty);
+        }
+
+        public async Task<IEnumerable<ResidencialPropertyGetDto>> GetAllResidencialProperty(int personId)
+        {
+            var residencialPropertySpec = new ResidencialPropertySpecification(personId);
+            var entities = await _residencialPropertyAsyncRepository.ListAsync(residencialPropertySpec);
+            
+            return Mapper.Map<IEnumerable<ResidencialPropertyGetDto>>(entities);
         }
 
         public async Task<ResidencialPropertyGetDto> GetResidencialProperty(int residencialPropertyId)
